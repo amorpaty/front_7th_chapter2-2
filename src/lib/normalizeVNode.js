@@ -26,6 +26,8 @@ export function normalizeVNode(vNode) {
   return {
     type,
     props: props || null,
-    children: children.map(normalizeVNode).filter((child) => child !== ""),
+    children: (children || [])
+      .map(normalizeVNode)
+      .filter((child) => child !== ""),
   };
 }
