@@ -1,6 +1,4 @@
 export function normalizeVNode(vNode) {
-  console.log("normalizeVNode 호출:", vNode);
-
   // null, undefined, boolean 값은 빈 문자열로 변환
   if (vNode == null || typeof vNode === "boolean") {
     return "";
@@ -17,17 +15,13 @@ export function normalizeVNode(vNode) {
 
   const { type, props, children } = vNode;
 
-  // 함수형 컴포넌트인 경우 실행 후 재귀적으로 정규화
+  // 함수형 컴포넌트 처리
   if (typeof type === "function") {
-    const componentProps = { ...props };
-    if (children && children.length > 0) {
-      componentProps.children = children;
-    }
-    const rendered = type(componentProps);
-    return normalizeVNode(rendered);
+    const component = type;
+    const componentProps = { ...props, children };
+    const result = component(componentProps);
+    return normalizeVNode(result);
   }
-
-  console.log("일반 HTML 요소 처리:", vNode);
 
   return {
     type,
